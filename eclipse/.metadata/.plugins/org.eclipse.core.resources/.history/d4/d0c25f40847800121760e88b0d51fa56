@@ -1,0 +1,27 @@
+package me.atom.windowsj;
+
+import java.util.Scanner;
+import java.lang.Math;
+
+
+public class Talk {
+
+	static Scanner scan;
+	
+	static void feelings() {
+		
+		int lower = 1;
+		int higher = 3;
+		int random = (int)(Math.random() * (higher-lower)) + lower;
+		if (random == 1) {
+			System.out.println("I'm fine tahnk you!");
+		} else if (random == 1) {
+			System.out.println("Well... Not really, actually. I'm sad not to be known enough :/ ");
+		} else if (random == 2) {
+			System.out.println("Normally, I shouldn't have feelings... But I'm so happy, right now!");
+		} else if (random == 3) {
+			System.out.println("I have not been progrmmed to answer this question... No, just kiding ! Haha ! I'm fine :)");
+		}
+	
+	}	
+}

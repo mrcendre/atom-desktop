@@ -1,0 +1,194 @@
+package me.atom.windowsj;
+
+import java.io.*;
+import java.net.*;
+import net.jimmc.jshortcut.JShellLink;
+
+public class AtomEnvironment {
+	
+	public static void setEnvironment() {
+		
+		String appDataPath = System.getenv("APPDATA");
+		System.out.println(appDataPath);
+		
+		
+		File audioDirectory = new File(appDataPath + "\\Atom\\UserAudio");
+		boolean userAudioFolderExists = audioDirectory.exists();
+		
+		File fontFile = new File(appDataPath + "\\Atom\\fonts\\OpenSans-CondLight.ttf");
+		boolean fontFileExists = fontFile.exists();	
+		
+		File bgFile = new File(appDataPath + "\\Atom\\images\\bg.png");
+		boolean bgFileExists = bgFile.exists();
+		
+		File iconFile = new File(appDataPath + "\\Atom\\images\\iconsmall.png");
+		boolean iconFileExists = iconFile.exists();
+		
+		
+		File imagesFolder = new File(appDataPath + "\\Atom\\images");
+		boolean imagesFolderExists = imagesFolder.exists();
+		
+		File fontFolder = new File(appDataPath + "\\Atom\\fonts");
+		boolean fontFolderExists = fontFolder.exists();
+		
+	    File desktopShortcut = new File(System.getProperty("user.home") + "\\"+"Desktop" + "\\" + "Atom.Ink");
+		boolean desktopShortcutExists = desktopShortcut.exists();
+		
+		
+		
+		if (!userAudioFolderExists) {
+			try {
+				if(audioDirectory.mkdir()) {
+					System.out.println("Directory created :D");
+					userAudioFolderExists = true;
+				} else {
+					System.out.println("Try again :/");
+				}
+			} catch (Exception e) {
+			e.printStackTrace();
+			}
+		}
+		if (!fontFileExists) {
+			if (fontFolderExists) {
+				fileUrl("http://atom.alwaysdata.net/guzzoni/OpenSans-CondLight.ttf", "OpenSans-CondLight.ttf", appDataPath + "\\Atom\\fonts");
+			} else {
+				try {
+					if(fontFolder.mkdir()) {
+						System.out.println("Directory created :D");
+						fileUrl("http://atom.alwaysdata.net/guzzoni/OpenSans-CondLight.ttf", "OpenSans-CondLight.ttf", appDataPath + "\\Atom\\fonts");
+						fontFolderExists = true;
+					} else {
+						System.out.println("Try again :/");
+					}
+				} catch (Exception e) {
+				e.printStackTrace();
+				}
+			}
+		}
+		
+		if (!bgFileExists) {
+			if (imagesFolderExists) {
+				fileUrl("http://atom.alwaysdata.net/guzzoni/bg.png", "bg.png", appDataPath + "\\Atom\\images");
+			} else {
+				try {
+					if(imagesFolder.mkdir()) {
+						System.out.println("Directory created :D");
+						fileUrl("http://atom.alwaysdata.net/guzzoni/bg.png", "bg.png", appDataPath + "\\Atom\\images");
+						imagesFolderExists = true;
+					} else {
+						System.out.println("Try again :/");
+					}
+				} catch (Exception e) {
+				e.printStackTrace();
+				}
+			}
+		}
+		
+		if (!iconFileExists) {
+			if (imagesFolderExists) {
+				fileUrl("http://atom.alwaysdata.net/guzzoni/iconsmall.png", "iconsmall.png", appDataPath + "\\Atom\\images");
+			} else {
+				try {
+					if(imagesFolder.mkdir()) {
+						System.out.println("Directory created :D");
+						fileUrl("http://atom.alwaysdata.net/guzzoni/iconsmall.png", "iconsmall.png", appDataPath + "\\Atom\\images");
+						imagesFolderExists = true;
+					} else {
+						System.out.println("Try again :/");
+					}
+				} catch (Exception e) {
+				e.printStackTrace();
+				}
+			}
+		}
+		if (!desktopShortcutExists) {
+			
+		}
+		
+		
+		
+		
+		if (userAudioFolderExists && fontFileExists && bgFileExists && iconFileExists) {
+			try { Atom.startAtom(); }
+			catch (Exception e) {e.printStackTrace();}	
+		}
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	final static int size=1024;
+	public static void
+	fileUrl(String fAddress, String
+	localFileName, String destinationDir) {
+	OutputStream outStream = null;
+	URLConnection  uCon = null;
+
+	InputStream is = null;
+	try {
+	URL Url;
+	byte[] buf;
+	int ByteRead,ByteWritten=0;
+	Url= new URL(fAddress);
+	outStream = new BufferedOutputStream(new
+	FileOutputStream(destinationDir+"\\"+localFileName));
+
+	uCon = Url.openConnection();
+	is = uCon.getInputStream();
+	buf = new byte[size];
+	while ((ByteRead = is.read(buf)) != -1) {
+	outStream.write(buf, 0, ByteRead);
+	ByteWritten += ByteRead;
+	}
+	System.out.println("Downloaded Successfully.");
+	System.out.println
+	("File name:\""+localFileName+ "\"\nNo ofbytes :" + ByteWritten);
+	}
+	catch (Exception e) {
+	e.printStackTrace();
+	}
+	finally {
+	try {
+	is.close();
+	outStream.close();
+	}
+	catch (IOException e) {
+	e.printStackTrace();
+	}}}
+	public static void 
+	fileDownload(String fAddress, String destinationDir)
+	{
+	 
+	  int slashIndex =fAddress.lastIndexOf('/');
+	int periodIndex =fAddress.lastIndexOf('.');
+
+	String fileName=fAddress.substring(slashIndex + 1);
+
+	if (periodIndex >=1 &&  slashIndex >= 0 
+	&& slashIndex < fAddress.length()-1)
+	{
+	fileUrl(fAddress,fileName,destinationDir);
+	}
+	else
+	{
+	System.err.println("path or file name.");
+	}}
+	public static void main(String[] args)
+	{
+
+	if(args.length==2)
+	{
+	for (int i = 1; i < args.length; i++) {
+	fileDownload(args[i],args[0]);
+	}
+	}
+	else{
+	  
+	}
+	}
+	
+}
